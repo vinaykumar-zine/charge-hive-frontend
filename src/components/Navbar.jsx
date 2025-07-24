@@ -21,8 +21,7 @@ function Navbar({ logoText }) {
                         <a
                             href={item}
                             className="font-medium block px-3 py-1.5 rounded-md transition 
-                hover:bg-white/10 hover:text-lime-200 
-                focus:outline-none focus:ring-2 focus:ring-lime-200"
+                            hover:bg-white/10 hover:text-lime-200"
                             tabIndex={0}
                         >
                             {item}

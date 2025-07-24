@@ -31,27 +31,26 @@ const links = [
 
 function Sidebar() {
     return (
-        <aside className="bg-gradient-to-b from-green-50 to-gray-100 h-screen w-56 p-0 flex flex-col shadow-lg border-r border-green-100">
+        <aside className="sticky top-16 left-0 h-[calc(100vh-4rem)] w-56 bg-gradient-to-b from-green-50 to-lime-100 border-r border-green-200 shadow-xl flex flex-col z-20">
             {/* Logo/Title */}
             <div className="py-6 px-6 mb-2 flex items-center gap-2 border-b border-green-100">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-extrabold text-xl">
+                <div className="w-9 h-9 bg-green-200 rounded-full flex items-center justify-center text-green-700 font-extrabold text-xl shadow">
                     EV
                 </div>
                 <span className="font-bold text-lg text-green-700 tracking-tight">Station Admin</span>
             </div>
             {/* Nav Links */}
-            <ul className="flex-1 flex flex-col space-y-2 mt-4 px-3">
+            <ul className="flex-1 flex flex-col space-y-1 mt-4 px-2 overflow-y-auto scrollbar-thin scrollbar-thumb-green-100 scrollbar-track-transparent">
                 {links.map(({ label, icon, path }) => (
                     <li key={label}>
                         {/* For real routing, swap <a> for <NavLink> from react-router-dom */}
                         <a
                             href={path}
-                            className="flex items-center gap-3 px-3 py-2 rounded-md cursor-pointer group font-medium text-gray-700
-                hover:bg-green-100 hover:text-green-700 transition
-                focus:bg-green-200 focus:text-green-900
-                active:bg-green-200"
+                            className="flex items-center gap-3 px-4 py-2 rounded-lg cursor-pointer group font-medium text-green-800 transition-all duration-150
+                hover:bg-green-200 hover:text-green-900 focus:bg-green-300 focus:text-green-900 active:bg-green-300
+                shadow-sm"
                         >
-                            <span className="text-green-500 text-lg group-hover:scale-110 transition">{icon}</span>
+                            <span className="text-green-500 text-lg group-hover:scale-110 transition-transform duration-150">{icon}</span>
                             {label}
                         </a>
                     </li>

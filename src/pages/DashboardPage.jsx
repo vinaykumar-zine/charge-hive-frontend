@@ -44,10 +44,6 @@ const alerts = ["Station B is offline", "Scheduled maintenance at Station A"];
 function DashboardPage() {
     return (
         <div className="flex flex-col h-screen">
-            {/* Fixed Navbar */}
-            <div className="fixed w-full z-10">
-                <Navbar />
-            </div>
 
             {/* Main content with sidebar */}
             <div className="flex flex-1 pt-16 bg-gray-50">

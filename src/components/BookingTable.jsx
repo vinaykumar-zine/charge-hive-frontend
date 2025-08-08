@@ -1,7 +1,6 @@
 import React from "react";
 
 function statusColor(status) {
-    // Feel free to expand with more status options as needed!
     switch (status) {
         case "Upcoming":
             return "bg-green-100 text-green-700";

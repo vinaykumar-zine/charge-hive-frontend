@@ -17,7 +17,6 @@ A modern, responsive React application for managing EV charging stations. Built 
 ### Technical Features
 
 - **Modern React** - Built with React 18 and hooks
-- **TypeScript Ready** - Easy migration path
 - **State Management** - Context API for global state
 - **API Integration** - RESTful API communication
 - **Error Handling** - Comprehensive error management
@@ -51,9 +50,6 @@ A modern, responsive React application for managing EV charging stations. Built 
 
    ```env
    VITE_API_BASE_URL=http://localhost:8080/api
-   VITE_APP_NAME=ChargeHive
-   VITE_APP_VERSION=1.0.0
-   VITE_ENABLE_DEBUG_MODE=true
    ```
 
 4. **Start the development server**
@@ -123,7 +119,7 @@ The application implements JWT-based authentication:
 ### User Roles
 
 - **ADMIN** - Full system access
-- **OPERATOR** - Station management
+- **OWNER** - Station management
 - **USER** - Basic user access
 
 ## 📊 API Integration
@@ -168,99 +164,4 @@ The frontend communicates with the backend through RESTful APIs:
 - **AuthContext** - Global authentication state
 - **Local State** - Component-specific state
 - **API State** - Server data management
-
-## 🚀 Deployment
-
-### Production Build
-
-1. **Build the application**
-
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy to your hosting service**
-   - Vercel, Netlify, or any static hosting
-   - Configure environment variables
-   - Set up custom domain
-
-### Environment Variables
-
-Required environment variables for production:
-
-```env
-VITE_API_BASE_URL=https://your-api-domain.com/api
-VITE_APP_NAME=ChargeHive
-VITE_ENABLE_DEBUG_MODE=false
-```
-
-## 🧪 Testing
-
-### Manual Testing Checklist
-
-- [ ] User registration and login
-- [ ] Station CRUD operations
-- [ ] Role-based access control
-- [ ] Responsive design on mobile
-- [ ] Form validation
-- [ ] Error handling
-- [ ] Loading states
-- [ ] Navigation and routing
-
-### Automated Testing (Future)
-
-- Unit tests with Jest
-- Integration tests with React Testing Library
-- E2E tests with Cypress
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-1. **API Connection Failed**
-
-   - Check if backend is running
-   - Verify API_BASE_URL in .env
-   - Check network connectivity
-
-2. **Authentication Issues**
-
-   - Clear browser storage
-   - Check JWT token validity
-   - Verify user credentials
-
-3. **Build Errors**
-   - Clear node_modules and reinstall
-   - Check Node.js version
-   - Verify all dependencies
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License.
-
-## 🆘 Support
-
-For support and questions:
-
-- Create an issue on GitHub
-- Contact the development team
-- Check the documentation
-
-## 🔄 Version History
-
-- **v1.0.0** - Initial release with core functionality
-- **v1.1.0** - Added authentication and user management
-- **v1.2.0** - Enhanced station management features
-- **v1.3.0** - Added booking system and real-time updates
-
----
-
-**ChargeHive** - Empowering the future of electric vehicle charging management.
+  

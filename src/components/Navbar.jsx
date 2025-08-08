@@ -1,97 +1,126 @@
-// src/components/Navbar.jsx
-// import React from "react";
-
-// function Navbar() {
-//     return (
-//         <nav className="flex justify-between items-center bg-blue-900 text-white px-6 py-4 shadow">
-//             <div className="text-xl font-bold">EVStation Admin</div>
-//             <ul className="flex gap-6">
-//                 <li className="hover:text-blue-300 cursor-pointer">Dashboard</li>
-//                 <li className="hover:text-blue-300 cursor-pointer">Stations</li>
-//                 <li className="hover:text-blue-300 cursor-pointer">Bookings</li>
-//                 <li className="hover:text-blue-300 cursor-pointer">Earnings</li>
-//                 <li className="hover:text-blue-300 cursor-pointer">Account</li>
-//             </ul>
-//             <div className="rounded-full bg-blue-800 px-3 py-1 cursor-pointer">Profile</div>
-//         </nav>
-//     );
-// }
-
-// export default Navbar;
-
-
-// import React from "react";
-// import { FaUserCircle } from "react-icons/fa";
-
-// function Navbar() {
-//     return (
-//         <nav className="flex justify-between items-center px-8 py-4 shadow
-//       bg-gradient-to-r from-indigo-900 via-indigo-700 to-blue-600 text-white">
-//             {/* Logo/Brand */}
-//             <div className="flex items-center gap-2 text-2xl font-bold tracking-tight">
-//                 <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-indigo-300 mr-2">
-//                     <circle cx="12" cy="12" r="10" />
-//                     <rect x="8" y="4" width="8" height="16" rx="4" className="fill-blue-300 opacity-80" />
-//                 </svg>
-//                 EVStation Admin
-//             </div>
-//             {/* Navigation Links */}
-//             <ul className="flex gap-8">
-//                 <li className="hover:text-blue-200 font-medium transition">Dashboard</li>
-//                 <li className="hover:text-blue-200 font-medium transition">Stations</li>
-//                 <li className="hover:text-blue-200 font-medium transition">Bookings</li>
-//                 <li className="hover:text-blue-200 font-medium transition">Earnings</li>
-//                 <li className="hover:text-blue-200 font-medium transition">Account</li>
-//             </ul>
-//             {/* User/Profile */}
-//             <div className="flex items-center gap-2">
-//                 <FaUserCircle className="text-3xl text-white/90" />
-//                 <span className="text-sm bg-indigo-700 px-3 py-1 rounded-full font-semibold shadow-inner">Admin</span>
-//             </div>
-//         </nav>
-//     );
-// }
-
-// export default Navbar;
-
-import React from "react";
-import { FaUserCircle } from "react-icons/fa";
+import React, { useState } from "react";
+import { FaUserCircle, FaSignOutAlt, FaCog, FaBars } from "react-icons/fa";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { user, logout, isAuthenticated } = useAuth();
+    const [showUserMenu, setShowUserMenu] = useState(false);
+
+    const navItems = [
+        { name: "Dashboard", path: "/dashboard", public: false },
+        { name: "Stations", path: "/stations", public: false },
+        { name: "Bookings", path: "/bookings", public: false },
+        { name: "Earnings", path: "/earnings", public: false },
+    ];
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+            navigate('/');
+        } catch (error) {
+            console.error('Logout error:', error);
+        }
+    };
+
+    const filteredNavItems = navItems.filter(item => 
+        item.public || isAuthenticated
+    );
+
     return (
         <nav className="flex items-center justify-between px-8 py-4 shadow bg-gradient-to-r from-green-900 via-green-700 to-lime-500 text-white">
             {/* Logo/Brand */}
-            <div className="flex items-center gap-2 text-2xl font-bold tracking-tight">
+            <Link to="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight hover:text-lime-200 transition">
                 <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-lime-200 mr-2">
                     <circle cx="12" cy="12" r="10" />
                     <rect x="8" y="4" width="8" height="16" rx="4" className="fill-green-400 opacity-80" />
                 </svg>
-                EVStation Admin
-            </div>
+                ChargeHive
+            </Link>
 
             {/* Navigation Links */}
-            <ul className="flex gap-6">
-                {["Dashboard", "Stations", "Bookings", "Earnings", "Account"].map((item) => (
-                    <li key={item}>
-                        <a
-                            href="#"
-                            className="font-medium block px-3 py-1.5 rounded-md transition 
-                hover:bg-white/10 hover:text-lime-200 
-                focus:outline-none focus:ring-2 focus:ring-lime-200"
-                            tabIndex={0}
+            <ul className="hidden md:flex gap-6">
+                {filteredNavItems.map((item) => (
+                    <li key={item.name}>
+                        <Link
+                            to={item.path}
+                            className={`font-medium block px-3 py-1.5 rounded-md transition 
+                                ${location.pathname === item.path
+                                    ? 'bg-white/20 text-lime-200'
+                                    : 'hover:bg-white/10 hover:text-lime-200'
+                                } 
+                                focus:outline-none focus:ring-2 focus:ring-lime-200`}
                         >
-                            {item}
-                        </a>
+                            {item.name}
+                        </Link>
                     </li>
                 ))}
             </ul>
 
-            {/* User/Profile */}
-            <div className="flex items-center gap-3">
-                <FaUserCircle className="text-3xl text-lime-50" />
-                <span className="text-sm bg-green-800 px-3 py-1 rounded-full font-semibold shadow-inner">
-                    Admin
-                </span>
+            {/* User Menu */}
+            <div className="flex items-center gap-4">
+                {isAuthenticated ? (
+                    <div className="relative">
+                        <button
+                            onClick={() => setShowUserMenu(!showUserMenu)}
+                            className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-full hover:bg-white/20 transition"
+                        >
+                            <FaUserCircle className="text-xl" />
+                            <span className="hidden sm:block font-medium">
+                                {user?.firstName || user?.email || 'User'}
+                            </span>
+                            {user?.role && (
+                                <span className="hidden sm:block text-xs bg-white/20 px-2 py-1 rounded-full">
+                                    {user.role}
+                                </span>
+                            )}
+                        </button>
+
+                        {/* Dropdown Menu */}
+                        {showUserMenu && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                                <div className="px-4 py-2 border-b border-gray-200">
+                                    <p className="text-sm font-medium text-gray-900">
+                                        {user?.firstName} {user?.lastName}
+                                    </p>
+                                    <p className="text-sm text-gray-500">{user?.email}</p>
+                                </div>
+                                <Link
+                                    to="/profile"
+                                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                    onClick={() => setShowUserMenu(false)}
+                                >
+                                    <FaCog className="inline mr-2" />
+                                    Profile Settings
+                                </Link>
+                                <button
+                                    onClick={handleLogout}
+                                    className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                >
+                                    <FaSignOutAlt className="inline mr-2" />
+                                    Sign Out
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className="flex gap-2">
+                        <Link
+                            to="/login"
+                            className="bg-white/10 px-4 py-2 rounded-full hover:bg-white/20 transition font-medium"
+                        >
+                            Sign In
+                        </Link>
+                        <Link
+                            to="/register"
+                            className="bg-lime-500 text-green-900 px-4 py-2 rounded-full hover:bg-lime-400 transition font-medium"
+                        >
+                            Sign Up
+                        </Link>
+                    </div>
+                )}
             </div>
         </nav>
     );

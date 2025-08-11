@@ -11,18 +11,39 @@ export const useAuth = () => {
     return context;
 };
 
+
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(() => {
+        // Try to load user from localStorage on first render
+        const storedUser = localStorage.getItem('user');
+        if (storedUser) {
+            const parsed = JSON.parse(storedUser);
+            // Always normalize userRole to be 'OWNER', 'ADMIN', etc.
+            let userRole = parsed.userRole ? parsed.userRole.replace(/^ROLE_/, '') : undefined;
+            return { ...parsed, userRole };
+        }
+        return null;
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Check if user is already logged in on app start
+    // On mount, check if token exists and optionally verify with backend
     useEffect(() => {
         const checkAuth = async () => {
+            const storedUser = localStorage.getItem('user');
+            if (storedUser) {
+                const parsed = JSON.parse(storedUser);
+                let userRole = parsed.userRole ? parsed.userRole.replace(/^ROLE_/, '') : undefined;
+                setUser({ ...parsed, userRole });
+            }
             try {
-                const currentUser = apiService.getCurrentUser();
-                if (currentUser) {
-                    setUser(currentUser);
+                // Optionally verify token with backend
+                const response = await apiService.getCurrentUser();
+                if (response) {
+                    let userRole = response.userRole ? response.userRole.replace(/^ROLE_/, '') : undefined;
+                    const normalized = { ...response, userRole };
+                    setUser(normalized);
+                    localStorage.setItem('user', JSON.stringify(normalized));
                 }
             } catch (error) {
                 console.error('Auth check failed:', error);
@@ -31,7 +52,6 @@ export const AuthProvider = ({ children }) => {
                 setLoading(false);
             }
         };
-
         checkAuth();
     }, []);
 
@@ -40,8 +60,10 @@ export const AuthProvider = ({ children }) => {
             setLoading(true);
             setError(null);
             const data = await apiService.login(credentials);
-            console.log('Login data:', data);
-            setUser(data.user);
+            let userRole = data.user.userRole ? data.user.userRole.replace(/^ROLE_/, '') : undefined;
+            const userObj = { ...data.user, userRole };
+            setUser(userObj);
+            localStorage.setItem('user', JSON.stringify(userObj));
             return data;
         } catch (error) {
             setError(error.message);
@@ -70,6 +92,8 @@ export const AuthProvider = ({ children }) => {
             await apiService.logout();
             setUser(null);
             setError(null);
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
         } catch (error) {
             console.error('Logout error:', error);
         }
@@ -80,8 +104,11 @@ export const AuthProvider = ({ children }) => {
             setLoading(true);
             setError(null);
             const updatedUser = await apiService.updateUser(userData, user.id);
-            setUser(updatedUser);
-            return updatedUser;
+            let userRole = updatedUser.userRole ? updatedUser.userRole.replace(/^ROLE_/, '') : undefined;
+            const normalized = { ...updatedUser, userRole };
+            setUser(normalized);
+            localStorage.setItem('user', JSON.stringify(normalized));
+            return normalized;
         } catch (error) {
             setError(error.message);
             throw error;
@@ -98,7 +125,7 @@ export const AuthProvider = ({ children }) => {
         register,
         logout,
         updateUser,
-        isAuthenticated: !!user,
+        isAuthenticated: user ? true : false,
     };
 
     return (

@@ -11,7 +11,7 @@ function RegisterPage() {
         password: '',
         confirmPassword: '',
         phoneNumber: '',
-        userRole: 'USER', // Default role
+        userRole: 'ROLE_DRIVER', // Default role
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -182,7 +182,7 @@ function RegisterPage() {
                             <select
                                 name="userRole"
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-green-500 focus:border-green-500 focus:z-10 sm:text-sm"
-                                value={formData.UserRole}
+                                value={formData.userRole}
                                 onChange={handleChange}
                             >
                                 <option value="ROLE_DRIVER">Driver</option>

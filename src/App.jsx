@@ -12,6 +12,7 @@ import StationDetailsPage from "./pages/StationDetailsPage";
 import ProfilePage from "./pages/ProfilePage";
 import EarningsPage from "./pages/EarningsPage";
 import OwnerBookingsPage from "./pages/OwnerBookingsPage";
+import OwnerDashBoardPage from "./pages/OwnerDashBoardPage";
 import 'leaflet/dist/leaflet.css';
 
 function App() {
@@ -30,6 +31,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          {/* newly added */}
+          <Route
+            path="/OwnerDashBoardPage"
+            element={
+              <ProtectedRoute>
+                <OwnerDashBoardPage />
               </ProtectedRoute>
             }
           />

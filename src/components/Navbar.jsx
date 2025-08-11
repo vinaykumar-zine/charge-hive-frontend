@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaUserCircle, FaSignOutAlt, FaCog, FaBars } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import OwnerDashBoardPage from "../pages/OwnerDashBoardPage";
 
 function Navbar() {
     const location = useLocation();
@@ -10,11 +11,18 @@ function Navbar() {
     const [showUserMenu, setShowUserMenu] = useState(false);
 
     const navItems = [
-        { name: "Dashboard", path: "/dashboard", public: false },
-        { name: "Stations", path: "/stations", public: false },
-        { name: "Bookings", path: "/bookings", public: false },
-        { name: "Earnings", path: "/earnings", public: false },
+        { name: "Dashboard", path: "/OwnerDashBoardPage", roles: ["OWNER"] },
+        { name: "Dashboard", path: "/DashBoard", roles: ["ADMIN"] },
+        { name: "Stations", path: "/stations", roles: ["ADMIN", "OWNER", "DRIVER"] },
+        { name: "Bookings", path: "/bookings", roles: ["ADMIN", "OWNER", "DRIVER"] },
+        { name: "Earnings", path: "/earnings", roles: ["OWNER"] },
     ];
+
+    // const filteredNavItems = navItems.filter(item =>
+    //     item.public || isAuthenticated
+    // );
+
+    const filteredNavItems = navItems.filter(item => item.roles.includes(user?.userRole));
 
     const handleLogout = async () => {
         try {
@@ -25,9 +33,7 @@ function Navbar() {
         }
     };
 
-    const filteredNavItems = navItems.filter(item => 
-        item.public || isAuthenticated
-    );
+
 
     return (
         <nav className="flex items-center justify-between px-8 py-4 shadow bg-gradient-to-r from-green-900 via-green-700 to-lime-500 text-white">

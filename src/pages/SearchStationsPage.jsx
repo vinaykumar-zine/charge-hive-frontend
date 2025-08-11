@@ -113,17 +113,6 @@ function SearchStationsPage() {
         </header>
 
         <section>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <button
-                className={`px-3 py-2 rounded-md border ${usingMyLocation ? 'bg-green-600 text-white border-green-700' : 'text-green-700 border-green-200 hover:bg-green-50'}`}
-                onClick={() => setUsingMyLocation((v) => !v)}
-              >
-                {usingMyLocation ? 'Using my location' : 'Use my location'}
-              </button>
-              {geoError && <span className="text-sm text-red-600">{geoError}</span>}
-            </div>
-          </div>
           <StationMap stations={filteredStations} currentLocation={currentLocation} center={currentLocation} />
         </section>
 

@@ -8,6 +8,7 @@ function Notifications({ alerts }) {
                 {alerts.map((alert, idx) => (
                     <li key={idx} className="my-1">{alert}</li>
                 ))}
+                <li className="my-1">Notifications will appear here</li>
             </ul>
         </div>
     );

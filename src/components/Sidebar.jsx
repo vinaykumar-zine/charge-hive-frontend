@@ -1,5 +1,6 @@
 import React from "react";
 import { FaTachometerAlt, FaChargingStation, FaCalendarCheck, FaChartBar, FaCog, FaHome } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
 import { Link, useLocation } from "react-router-dom";
 
 const links = [
@@ -17,11 +18,8 @@ function Sidebar() {
     return (
         <aside className="bg-gradient-to-b from-green-50 to-gray-100 h-screen w-56 p-0 flex flex-col shadow-lg border-r border-green-100">
             {/* Logo/Title */}
-            <div className="py-6 px-6 mb-2 flex items-center gap-2 border-b border-green-100">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-extrabold text-xl">
-                    EV
-                </div>
-                <span className="font-bold text-lg text-green-700 tracking-tight">Station Admin</span>
+            <div className="py-6 px-6 mt-4 flex items-center gap-2 border-b border-green-100">
+                <span className="font-bold text-lg text-green-700 tracking-tight">MENU</span>
             </div>
             {/* Nav Links */}
             <ul className="flex-1 flex flex-col space-y-2 mt-4 px-3">

@@ -6,8 +6,8 @@ import Sidebar from "../components/Sidebar";
 import KPICards from "../components/KPICards";
 import StationTable from "../components/StationTable";
 import BookingTable from "../components/BookingTable";
-import EarningsChart from "../components/EarningsChart";
-import StationMap from "../components/StationMap";
+// import EarningsChart from "../components/EarningsChart";
+// import StationMap from "../components/StationMap";
 import Notifications from "../components/Notifications";
 import StationForm from "../components/StationForm";
 
@@ -200,10 +200,10 @@ function DashboardPage() {
                     </section>
 
                     {/* SECOND ROW: Earnings chart & Station Map */}
-                    <section className="grid grid-cols-1 lg:grid-cols-1 gap-8 w-full rounded overflow-hidden z-0">
+                    {/* <section className="grid grid-cols-1 lg:grid-cols-1 gap-8 w-full rounded overflow-hidden z-0">
                         <StationMap stations={stations} />
                         <EarningsChart data={stations} />
-                    </section>
+                    </section> */}
 
                     {/* Notifications */}
                     <Notifications alerts={alerts} />

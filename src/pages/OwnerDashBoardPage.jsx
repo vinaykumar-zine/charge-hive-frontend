@@ -4,7 +4,6 @@ import { Zap, DollarSign, MapPin, Power, PlusCircle, Trash2 } from 'lucide-react
 // Import child components
 import StatItem from '../components/StatItem';
 import apiService from "../services/api";
-import StatusBadge from '../components/StatusBadge';
 import AddPortModal from '../components/AddPortModal';
 import DeleteConfirmationModal from '../components/DeleteConfirmationModal';
 import Navbar from '../components/Navbar';
@@ -12,8 +11,7 @@ import { useAuth } from '../context/AuthContext';
 import StationForm from '../components/StationForm';
 
 // Import mock data and helpers
-// import { initialStations } from '../data/mockData';
-import { initialStations } from "../assets/mockData";
+// import { initialStations } from "../assets/mockData";
 import { formatCurrency } from '../assets/helper';
 
 export default function OwnerDashBoardPage() {
@@ -34,7 +32,7 @@ export default function OwnerDashBoardPage() {
 
 
     // Calculate overall stats from the stations state
-    const totalEarnings = stations.reduce((acc, station) => acc + station.earnings, 0);
+    // const totalEarnings = stations.reduce((acc, station) => acc + station.earnings, 0);
     const totalStations = stations.length;
     const totalPorts = stations.reduce((acc, station) => acc + station.ports.length, 0);
 
@@ -137,16 +135,6 @@ export default function OwnerDashBoardPage() {
 
     // --- CRUD Operations ---
     const handleAddPort = async (stationId, newPort) => {
-        // setStations(
-        //     stations.map((station) => {
-        //         if (station.id === stationId) {
-        //             const newPortWithId = { ...newPort, id: `P${(station.ports.length + 1).toString().padStart(2, '0')}` };
-        //             return { ...station, ports: [...station.ports, newPortWithId] };
-        //         }
-        //         return station;
-        //     })
-        // );
-        // setAddPortModalOpen(false); // Close modal on success
         console.log("newport", newPort);
         console.log("id", stationId);
         try {

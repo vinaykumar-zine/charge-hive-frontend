@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem('user');
         if (storedUser) {
             const parsed = JSON.parse(storedUser);
-            // Always normalize userRole to be 'OWNER', 'ADMIN', etc.
+            // Always normalize userRole to be 'OWNER', 'ADMIN', 'DRIVER'.
             let userRole = parsed.userRole ? parsed.userRole.replace(/^ROLE_/, '') : undefined;
             return { ...parsed, userRole };
         }

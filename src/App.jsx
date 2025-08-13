@@ -26,19 +26,11 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected routes */}
-          <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute>
-                <DashboardPage />
-              </ProtectedRoute>
-            }
-          />
-          {/* newly added */}
+
           <Route
             path="/OwnerDashBoardPage"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="OWNER">
                 <OwnerDashBoardPage />
               </ProtectedRoute>
             }
@@ -92,7 +84,7 @@ function App() {
           <Route
             path="/earnings"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="OWNER">
                 <EarningsPage />
               </ProtectedRoute>
             }
@@ -109,7 +101,7 @@ function App() {
 
           {/* Admin routes */}
           <Route
-            path="/admin"
+            path="/dashboard"
             element={
               <ProtectedRoute requiredRole="ADMIN">
                 <DashboardPage />

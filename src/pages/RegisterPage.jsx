@@ -59,7 +59,7 @@ function RegisterPage() {
             const { confirmPassword, ...registrationData } = formData;
             console.log('Registration data:', registrationData);
             await register(registrationData);
-            navigate('/login', { state: { message: 'Registration successful! Please log in.' } });
+            navigate('/login');
         } catch (error) {
             setError(error.message || 'Registration failed. Please try again.');
         } finally {

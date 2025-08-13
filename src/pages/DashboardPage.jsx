@@ -6,9 +6,6 @@ import Sidebar from "../components/Sidebar";
 import KPICards from "../components/KPICards";
 import StationTable from "../components/StationTable";
 import BookingTable from "../components/BookingTable";
-// import EarningsChart from "../components/EarningsChart";
-// import StationMap from "../components/StationMap";
-import Notifications from "../components/Notifications";
 import StationForm from "../components/StationForm";
 
 function DashboardPage() {
@@ -119,12 +116,6 @@ function DashboardPage() {
         activeUsers: stations.reduce((sum, station) => sum + (station.activeUsers || 0), 0),
     };
 
-    // Prepare alerts/notifications
-    const alerts = [
-        ...(stations.filter(s => !s.isAvailable).map(s => `${s.name} is offline`)),
-        ...(stations.filter(s => s.status === 'MAINTENANCE').map(s => `Scheduled maintenance at ${s.name}`)),
-    ];
-
     if (loading) {
         return (
             <div className="flex flex-col h-screen">
@@ -199,14 +190,6 @@ function DashboardPage() {
                         </div>
                     </section>
 
-                    {/* SECOND ROW: Earnings chart & Station Map */}
-                    {/* <section className="grid grid-cols-1 lg:grid-cols-1 gap-8 w-full rounded overflow-hidden z-0">
-                        <StationMap stations={stations} />
-                        <EarningsChart data={stations} />
-                    </section> */}
-
-                    {/* Notifications */}
-                    <Notifications alerts={alerts} />
                 </main>
             </div>
 

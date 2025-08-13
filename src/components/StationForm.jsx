@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaSpinner, FaTimes } from 'react-icons/fa';
 
-// This is the main form component, updated to match your DTO.
 const StationForm = ({ station = null, onSubmit, onCancel, isLoading = false }) => {
     // Initialize state to match the CreateStationRequestDto structure
     const [formData, setFormData] = useState({

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Zap, DollarSign, MapPin, Power, PlusCircle, Trash2 } from 'lucide-react';
-
-// Import child components
 import StatItem from '../components/StatItem';
 import apiService from "../services/api";
 import AddPortModal from '../components/AddPortModal';
@@ -189,7 +187,6 @@ export default function OwnerDashBoardPage() {
             </div>
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <header className="mb-8">
-                    {/* <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1> */}
                     <p className="text-lg text-gray-600 mt-1">Your charging network overview.</p>
                 </header>
 
@@ -228,7 +225,6 @@ export default function OwnerDashBoardPage() {
                                 {stations.map((station) => (
                                     <tr key={station.id}>
                                         <td className="p-6"><p className="font-bold text-gray-900">{station.name}</p><p className="text-sm text-gray-500">{station.location}</p></td>
-                                        {/* <td className="p-6 font-medium text-gray-800">{formatCurrency(station.earnings)}</td> */}
                                         <td className="p-6 font-medium text-gray-800">{getStationEarning(station.id)}</td>
                                         <td className="p-6">
                                             <div className="space-y-3">
@@ -243,7 +239,6 @@ export default function OwnerDashBoardPage() {
                                                                 <span>₹{port.pricePerHour || port.price}/hr</span>
                                                             </div>
                                                         </div>
-                                                        {/* <StatusBadge status={port.status} /> */}
                                                     </div>
                                                 ))}
                                             </div>

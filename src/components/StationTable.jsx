@@ -19,7 +19,6 @@ function StationTable({ stations, onAddStation, onEditStation, onDeleteStation, 
 
     const getStatusText = (station) => {
         if (!station.isAvailable) return 'Offline';
-        if (station.status === 'MAINTENANCE') return 'Maintenance';
         if (station.status === 'APPROVED') return 'Online';
         if (station.status === 'PENDING') return 'Pending Approval';
         return 'Online';

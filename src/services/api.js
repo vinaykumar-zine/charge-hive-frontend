@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api';
+const API_BASE_URL = 'http://localhost:8080/api';
 
 /**
  * A service class to handle all API communications using axios.
@@ -79,10 +79,10 @@ class ApiService {
 
     // --- Station APIs ---
 
-    async getNearbyStations(lat, lng, radiusKm = 5) {
-        console.log(`Fetching nearby stations for lat: ${lat}, lng: ${lng}, radius: ${radiusKm} km`);
-        return this.api.get('/stations/nearby', { params: { lat, lng, radiusKm } });
-    }
+    // async getNearbyStations(lat, lng, radiusKm = 5) {
+    //     console.log(`Fetching nearby stations for lat: ${lat}, lng: ${lng}, radius: ${radiusKm} km`);
+    //     return this.api.get('/stations/nearby', { params: { lat, lng, radiusKm } });
+    // }
 
 
     async getAllStations() {
@@ -164,11 +164,6 @@ class ApiService {
 
     async getMyBookings() {
         console.warn("getMyBookings API is not implemented.");
-        return Promise.resolve([]);
-    }
-
-    async getOwnerBookings(params = {}) {
-        console.warn("getOwnerBookings API is not implemented.");
         return Promise.resolve([]);
     }
 }

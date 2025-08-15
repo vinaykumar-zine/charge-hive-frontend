@@ -3,29 +3,34 @@ import { useNavigate } from "react-router-dom";
 
 function StationCard({ station }) {
   const navigate = useNavigate();
+
   return (
     <div className="bg-white rounded-lg shadow p-5 flex flex-col gap-3">
       <div className="flex items-start justify-between">
-        <div>
+        <div className="w-8/12">
           <h3 className="text-lg font-semibold text-green-900">{station.name}</h3>
-          <p className="text-sm text-gray-600">{station.location}</p>
+          <p className="text-sm text-gray-600">
+            {station.address}, {station.city}, {station.state} - {station.postalCode}
+          </p>
         </div>
-        <span
-          className={`text-xs px-2 py-1 rounded-full ${
-            station.isAvailable ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-          }`}
-        >
-          {station.isAvailable ? "Available" : "Unavailable"}
-        </span>
+        {station.isApproved ? (
+          <span className="w-32 text-xs px-2 py-1 rounded-full bg-green-100 text-green-700">
+            Approved
+          </span>
+        ) : (
+          <span className="w-32 text-xs px-2 py-1 rounded-full bg-yellow-100 text-yellow-700">
+            Pending Approval
+          </span>
+        )}
       </div>
+
       <div className="text-sm text-gray-700">
-        <p>Ports: {station.numberOfPorts} • Rate: {station.chargingRate} kW</p>
-        <p>Price: ₹{station.pricePerHour}/hr</p>
+        <p>Total Ports: {station.ports?.length || 0}</p>
       </div>
+
       <div className="flex gap-2 mt-2">
         <button
-          className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition disabled:opacity-50"
-          disabled={!station.isAvailable}
+          className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
           onClick={() => navigate(`/book/${station.id}`, { state: { station } })}
         >
           Book
@@ -42,5 +47,6 @@ function StationCard({ station }) {
 }
 
 export default StationCard;
+
 
 

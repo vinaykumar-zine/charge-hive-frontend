@@ -12,6 +12,7 @@ import StationDetailsPage from "./pages/StationDetailsPage";
 import ProfilePage from "./pages/ProfilePage";
 import EarningsPage from "./pages/EarningsPage";
 import OwnerBookingsPage from "./pages/OwnerBookingsPage";
+import OwnerDashBoardPage from "./pages/OwnerDashBoardPage";
 import 'leaflet/dist/leaflet.css';
 
 function App() {
@@ -25,11 +26,12 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           {/* Protected routes */}
+
           <Route
-            path="/dashboard"
+            path="/OwnerDashBoardPage"
             element={
-              <ProtectedRoute>
-                <DashboardPage />
+              <ProtectedRoute requiredRole="OWNER">
+                <OwnerDashBoardPage />
               </ProtectedRoute>
             }
           />
@@ -82,7 +84,7 @@ function App() {
           <Route
             path="/earnings"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute requiredRole="OWNER">
                 <EarningsPage />
               </ProtectedRoute>
             }
@@ -99,7 +101,7 @@ function App() {
 
           {/* Admin routes */}
           <Route
-            path="/admin"
+            path="/dashboard"
             element={
               <ProtectedRoute requiredRole="ADMIN">
                 <DashboardPage />

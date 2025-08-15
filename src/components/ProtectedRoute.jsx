@@ -6,6 +6,9 @@ function ProtectedRoute({ children, requiredRole = null }) {
     const { user, loading, isAuthenticated } = useAuth();
     const location = useLocation();
 
+    console.log(user);
+
+
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -21,7 +24,8 @@ function ProtectedRoute({ children, requiredRole = null }) {
         return <Navigate to="/login" state={{ from: location }} replace />;
     }
 
-    if (requiredRole && user?.role !== requiredRole) {
+    //If a required role is given, check whether the user’s role is not equal to that required role.
+    if (requiredRole && user?.userRole !== requiredRole) {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
                 <div className="text-center">

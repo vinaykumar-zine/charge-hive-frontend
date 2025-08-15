@@ -1,6 +1,6 @@
 import React from "react";
 
-function StationFilters({ query, onQuery, maxPrice, onMaxPrice, onlyAvailable, onOnlyAvailable, onUseMyLocation, usingMyLocation, geoError }) {
+function StationFilters({ query, onQuery, maxPrice, onMaxPrice, geoError }) {
   return (
     <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-3">
       <div className="flex gap-2">
@@ -19,22 +19,8 @@ function StationFilters({ query, onQuery, maxPrice, onMaxPrice, onlyAvailable, o
           value={maxPrice}
           onChange={(e) => onMaxPrice(e.target.value)}
         />
-        <label className="inline-flex items-center gap-2 px-3 py-2 border rounded-md bg-white">
-          <input
-            type="checkbox"
-            checked={!!onlyAvailable}
-            onChange={(e) => onOnlyAvailable(e.target.checked)}
-          />
-          <span className="text-sm text-gray-700">Only available</span>
-        </label>
       </div>
       <div className="flex items-center gap-2">
-        <button
-          className={`px-3 py-2 rounded-md border ${usingMyLocation ? 'bg-green-600 text-white border-green-700' : 'text-green-700 border-green-200 hover:bg-green-50'}`}
-          onClick={onUseMyLocation}
-        >
-          {usingMyLocation ? 'Using my location' : 'Use my location'}
-        </button>
         {geoError && <span className="text-sm text-red-600">{geoError}</span>}
       </div>
     </div>

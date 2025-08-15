@@ -10,11 +10,14 @@ function Navbar() {
     const [showUserMenu, setShowUserMenu] = useState(false);
 
     const navItems = [
-        { name: "Dashboard", path: "/dashboard", public: false },
-        { name: "Stations", path: "/stations", public: false },
-        { name: "Bookings", path: "/bookings", public: false },
-        { name: "Earnings", path: "/earnings", public: false },
+        { name: "Dashboard", path: "/OwnerDashBoardPage", roles: ["OWNER"] },
+        { name: "Dashboard", path: "/DashBoard", roles: ["ADMIN"] },
+        { name: "Stations", path: "/stations", roles: ["ADMIN", "OWNER", "DRIVER"] },
+        { name: "Bookings", path: "/bookings", roles: ["ADMIN", "OWNER", "DRIVER"] },
+        { name: "Earnings", path: "/earnings", roles: ["OWNER"] },
     ];
+
+    const filteredNavItems = navItems.filter(item => item.roles.includes(user?.userRole));
 
     const handleLogout = async () => {
         try {
@@ -25,12 +28,10 @@ function Navbar() {
         }
     };
 
-    const filteredNavItems = navItems.filter(item => 
-        item.public || isAuthenticated
-    );
+
 
     return (
-        <nav className="flex items-center justify-between px-8 py-4 shadow bg-gradient-to-r from-green-900 via-green-700 to-lime-500 text-white">
+        <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 shadow bg-gradient-to-r from-green-900 via-green-700 to-lime-500 text-white">
             {/* Logo/Brand */}
             <Link to="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight hover:text-lime-200 transition">
                 <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-lime-200 mr-2">

@@ -30,7 +30,7 @@ function LoginPage() {
 
         try {
             await login(formData);
-            navigate('/dashboard');
+            navigate('/');
         } catch (error) {
             setError(error.message || 'Login failed. Please try again.');
         } finally {
@@ -89,7 +89,7 @@ function LoginPage() {
                             />
                             <button
                                 type="button"
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                className="absolute inset-y-0 right-0 pr-3 flex items-center z-2"
                                 onClick={() => setShowPassword(!showPassword)}
                             >
                                 {showPassword ? (

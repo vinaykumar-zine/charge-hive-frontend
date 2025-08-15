@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
+import apiService from "../services/api";
 
 function ProfilePage() {
   const { user, updateUser } = useAuth();
@@ -8,6 +11,7 @@ function ProfilePage() {
   const [pwd, setPwd] = useState({ currentPassword: "", newPassword: "", confirm: "" });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
+  const [profileError, setprofileError] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
@@ -18,31 +22,40 @@ function ProfilePage() {
 
   const handleSaveProfile = async (e) => {
     e.preventDefault();
-    setError(""); setMessage(""); setSaving(true);
+    setprofileError(""); setMessage(""); setSaving(true);
     try {
       await updateUser(form);
       setMessage("Profile updated");
+      toast.success("Profile updated successfully!");
     } catch (err) {
-      setError(err.message || "Failed to update profile");
+      setprofileError(err.message || "Failed to update profile");
+      toast.error(err.message || "Failed to update profile");
     } finally { setSaving(false); }
   };
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
     setError(""); setMessage("");
-    if (pwd.newPassword !== pwd.confirm) { setError("Passwords do not match"); return; }
+    if (pwd.newPassword !== pwd.confirm) {
+      setError("Passwords do not match");
+      toast.error("Passwords do not match");
+      return;
+    }
     try {
-      await new Promise(res => setTimeout(res, 400));
-      setMessage("Password changed");
+      const response = await apiService.changePassword({ newPassword: pwd.newPassword, currentPassword: pwd.currentPassword });
+      setMessage(response.data);
       setPwd({ currentPassword: "", newPassword: "", confirm: "" });
+      toast.success("Password updated successfully!");
     } catch (err) {
       setError(err.message || "Failed to change password");
+      toast.error(err.message || "Failed to change password");
     }
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       <main className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <h1 className="text-2xl font-bold text-green-800">Profile Settings</h1>
 
@@ -64,7 +77,7 @@ function ProfilePage() {
                 onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} />
             </div>
           </div>
-          {error && <div className="text-sm text-red-600">{error}</div>}
+          {profileError && <div className="text-sm text-red-600">{profileError}</div>}
           {message && <div className="text-sm text-green-700">{message}</div>}
           <button type="submit" disabled={saving} className="bg-green-600 text-white px-4 py-2 rounded-md">{saving ? "Saving..." : "Save changes"}</button>
         </form>

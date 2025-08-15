@@ -3,6 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import StationMap from "../components/StationMap";
 import axios from "axios";
+import apiService from "../services/api";
 
 function StationDetailsPage() {
     const { stationId } = useParams();
@@ -15,8 +16,7 @@ function StationDetailsPage() {
     useEffect(() => {
         if (!stationData) {
             setLoading(true);
-            axios
-                .get(`http://localhost:8080/api/stations/${stationId}`)
+            apiService.getStationById(stationId)
                 .then((res) => setStationData(res.data))
                 .catch(() => setError("Station not found"))
                 .finally(() => setLoading(false));

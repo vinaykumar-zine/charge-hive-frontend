@@ -36,21 +36,22 @@ export const AuthProvider = ({ children }) => {
                 let userRole = parsed.userRole ? parsed.userRole.replace(/^ROLE_/, '') : undefined;
                 setUser({ ...parsed, userRole });
             }
-            try {
-                // Optionally verify token with backend
-                const response = await apiService.getCurrentUser();
-                if (response) {
-                    let userRole = response.userRole ? response.userRole.replace(/^ROLE_/, '') : undefined;
-                    const normalized = { ...response, userRole };
-                    setUser(normalized);
-                    localStorage.setItem('user', JSON.stringify(normalized));
-                }
-            } catch (error) {
-                console.error('Auth check failed:', error);
-                await logout();
-            } finally {
-                setLoading(false);
-            }
+            // try {
+            //     // Optionally verify token with backend
+            //     const response = await apiService.getCurrentUser();
+            //     if (response) {
+            //         let userRole = response.userRole ? response.userRole.replace(/^ROLE_/, '') : undefined;
+            //         const normalized = { ...response, userRole };
+            //         setUser(normalized);
+            //         localStorage.setItem('user', JSON.stringify(normalized));
+            //     }
+            // } catch (error) {
+            //     console.error('Auth check failed:', error);
+            //     await logout();
+            // } finally {
+            //     setLoading(false);
+            // }
+            setLoading(false);
         };
         checkAuth();
     }, []);

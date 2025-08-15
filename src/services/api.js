@@ -61,7 +61,7 @@ class ApiService {
     }
 
     async getCurrentUser() {
-        return this.api.get('/auth/me');
+        return this.api.get('/auth/');
     }
 
 
@@ -92,6 +92,10 @@ class ApiService {
     async getStationsByOwner() {
         return this.api.get('/stations/get-station-by-owner');
     }
+
+    async getStationById(stationId) {
+        return this.api.get(`/stations/${stationId}`);
+    }   
 
     async createStation(stationData) {
         console.log("Creating station:", stationData);
@@ -157,6 +161,9 @@ class ApiService {
 
     // --- Booking APIs (Placeholders) ---
 
+    async createBooking(bookingData) {
+        return this.api.post('/bookings', bookingData);
+    }
 
     async getBookingsByStationId(id) {
         return this.api.get(`/bookings/station/${id}`);
@@ -165,6 +172,11 @@ class ApiService {
     async getMyBookings() {
         console.warn("getMyBookings API is not implemented.");
         return Promise.resolve([]);
+    }
+
+
+    async cancelBooking(bookingId){
+        return this.api.put(`/${bookingId}/cancel`)
     }
 }
 

@@ -11,6 +11,7 @@ function SearchStationsPage() {
   const [currentLocation, setCurrentLocation] = useState(null); // [lat, lng]
   const [geoError, setGeoError] = useState("");
   const [stations, setStations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const filteredStations = useMemo(() => {
     return stations.filter((s) => {
@@ -23,29 +24,63 @@ function SearchStationsPage() {
     });
   }, [query, maxPrice, stations]);
 
-  useEffect(() => {
-    // if (!usingMyLocation) return;
-    if (!navigator.geolocation) {
-      setGeoError("Geolocation is not supported in this browser.");
-      return;
+  const fetchStations = async (latitude, longitude) => {
+    try {
+      setLoading(true);
+      const data = await apiService.getNearbyStations(latitude, longitude, 5);
+      console.log(`Fetched nearby stations`, data);
+      setStations(data || []);
+    } catch (error) {
+      console.error('Error fetching stations:', error);
+      // Fallback to getting all stations if nearby search fails
+      try {
+        const allStations = await apiService.getAllStations();
+        setStations(allStations || []);
+      } catch (error) {
+        console.error('Error fetching all stations:', error);
+        setStations([]);
+      }
+    } finally {
+      setLoading(false);
     }
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        setGeoError("");
-        const lat = pos.coords.latitude;
-        const lng = pos.coords.longitude;
+  };
 
-        localStorage.setItem("userLocation", JSON.stringify([lat, lng]));
-        setCurrentLocation([lat, lng]);
+  // Effect to get user location and fetch nearby stations
+  useEffect(() => {
+    const savedLocation = localStorage.getItem("userLocation");
+    
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        async (pos) => {
+          setGeoError("");
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
 
-        // Call backend API with lat/lng
-        const data = await apiService.getNearbyStations(lat, lng, 5);
-        console.log(`Fetched nearby stations`, data);
-        setStations(data || []);
-      },
-      () => setGeoError("Unable to retrieve your location."),
-      { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
-    );
+          localStorage.setItem("userLocation", JSON.stringify([lat, lng]));
+          setCurrentLocation([lat, lng]);
+          await fetchStations(lat, lng);
+        },
+        async (error) => {
+          console.warn("Geolocation error:", error);
+          setGeoError("Unable to retrieve your location.");
+          
+          // If we have a saved location, use it
+          if (savedLocation) {
+            const [lat, lng] = JSON.parse(savedLocation);
+            setCurrentLocation([lat, lng]);
+            await fetchStations(lat, lng);
+          } else {
+            // Fallback to getting all stations
+            await fetchStations();
+          }
+        },
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+      );
+    } else {
+      setGeoError("Geolocation is not supported in this browser.");
+      // Fallback to getting all stations
+      fetchStations();
+    }
   }, []);
 
   return (

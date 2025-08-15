@@ -4,8 +4,8 @@ import Navbar from "../components/Navbar";
 import BookingTable from "../components/BookingTable";
 
 const DUMMY_BOOKINGS = [
-  { id: 101, user: "You", station: "Connaught Place EV Hub", slotTime: "2025-08-08 10:00 (2h)", status: "Upcoming" },
-  { id: 102, user: "You", station: "Cyber City ChargePoint", slotTime: "2025-08-01 18:30 (1h)", status: "Completed" },
+  // { id: 101, user: "You", station: "Connaught Place EV Hub", slotTime: "2025-08-08 10:00 (2h)", status: "Upcoming" },
+  // { id: 102, user: "You", station: "Cyber City ChargePoint", slotTime: "2025-08-01 18:30 (1h)", status: "Completed" },
 ];
 
 function BookingsListPage() {

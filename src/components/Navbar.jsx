@@ -10,14 +10,18 @@ function Navbar() {
     const [showUserMenu, setShowUserMenu] = useState(false);
 
     const navItems = [
-        { name: "Dashboard", path: "/OwnerDashBoardPage", roles: ["OWNER"] },
-        { name: "Dashboard", path: "/DashBoard", roles: ["ADMIN"] },
-        { name: "Stations", path: "/stations", roles: ["ADMIN", "OWNER", "DRIVER"] },
-        { name: "Bookings", path: "/bookings", roles: ["ADMIN", "OWNER", "DRIVER"] },
-        { name: "Earnings", path: "/earnings", roles: ["OWNER"] },
+        { name: "Dashboard", path: "/OwnerDashBoardPage", roles: ["ROLE_OWNER"] },
+        { name: "Dashboard", path: "/DashBoard", roles: ["ROLE_ADMIN"] },
+        { name: "Stations", path: "/stations", roles: ["ROLE_ADMIN", "ROLE_OWNER", "ROLE_DRIVER"] },
+        { name: "Bookings", path: "/bookings", roles: ["ROLE_ADMIN", "ROLE_OWNER", "ROLE_DRIVER"] },
+        { name: "Earnings", path: "/earnings", roles: ["ROLE_OWNER"] },
     ];
 
-    const filteredNavItems = navItems.filter(item => item.roles.includes(user?.userRole));
+    const filteredNavItems = navItems.filter(item => {
+        if (!user?.userRole) return false;
+        const userRoleWithPrefix = `ROLE_${user.userRole}`;
+        return item.roles.includes(userRoleWithPrefix);
+    });
 
     const handleLogout = async () => {
         try {
@@ -31,7 +35,7 @@ function Navbar() {
 
 
     return (
-        <nav className="sticky top-0 z-50 flex items-center justify-between px-8 py-4 shadow bg-gradient-to-r from-green-900 via-green-700 to-lime-500 text-white">
+        <nav className="sticky top-0 z-500 flex items-center justify-between px-8 py-4 shadow bg-gradient-to-r from-green-900 via-green-700 to-lime-500 text-white">
             {/* Logo/Brand */}
             <Link to="/" className="flex items-center gap-2 text-2xl font-bold tracking-tight hover:text-lime-200 transition">
                 <svg viewBox="0 0 24 24" className="w-8 h-8 fill-current text-lime-200 mr-2">

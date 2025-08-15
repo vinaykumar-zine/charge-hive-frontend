@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+
 
 function statusColor(status) {
     switch (status) {
@@ -13,7 +14,23 @@ function statusColor(status) {
     }
 }
 
-function BookingTable({ bookings }) {
+function BookingTable({ bookings, onCancel, onComplete }) {
+    const handleCancel = (bookingId) => {
+        // if (window.confirm('Are you sure you want to cancel this booking?')) {
+            onCancel(bookingId);
+        // }
+    };
+
+    const handleComplete = (bookingId) => {
+        // if (window.confirm('Mark this booking as completed?')) {
+            onComplete(bookingId);
+        // }
+    };
+
+    useEffect(() => {
+        
+    }, [BookingTable])
+
     return (
         <div className="bg-white rounded-lg shadow p-6 mb-6 overflow-x-auto">
             <h2 className="text-lg font-semibold mb-4">Current Bookings</h2>
@@ -44,12 +61,16 @@ function BookingTable({ bookings }) {
                                 <td className="px-3 py-2">
                                     <div className="flex gap-2">
                                         <button
+                                            onClick={() => handleCancel(booking.id)}
                                             className="bg-red-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow hover:bg-red-600 transition"
+                                            disabled={booking.status === 'Cancelled' || booking.status === 'Completed'}
                                         >
                                             Cancel
                                         </button>
                                         <button
+                                            onClick={() => handleComplete(booking.id)}
                                             className="bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold shadow hover:bg-green-700 transition"
+                                            disabled={booking.status === 'Cancelled' || booking.status === 'Completed'}
                                         >
                                             Complete
                                         </button>

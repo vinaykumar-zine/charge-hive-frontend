@@ -6,8 +6,8 @@ import { useAuth } from "../context/AuthContext";
 import apiService from "../services/api";
 
 function ProfilePage() {
-  const { user, updateUser } = useAuth();
-  const [form, setForm] = useState({ firstName: "", lastName: "", phoneNumber: "" });
+  const { user, updateUser, loading } = useAuth();
+  const [form, setForm] = useState({ firstName: "", lastName: "", phoneNumber: "", email: "" });
   const [pwd, setPwd] = useState({ currentPassword: "", newPassword: "", confirm: "" });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
@@ -15,8 +15,22 @@ function ProfilePage() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    if (user) {
-      setForm({ firstName: user.firstName || "", lastName: user.lastName || "", phoneNumber: user.phoneNumber || "" });
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      const userData = JSON.parse(storedUser);
+      setForm({
+        firstName: userData.firstName || "",
+        lastName: userData.lastName || "",
+        phoneNumber: userData.phoneNumber || "",
+        email: userData.email || ""
+      });
+    } else if (user) {
+      setForm({
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        phoneNumber: user.phoneNumber || "",
+        email: user.email || ""
+      });
     }
   }, [user]);
 
@@ -24,7 +38,11 @@ function ProfilePage() {
     e.preventDefault();
     setprofileError(""); setMessage(""); setSaving(true);
     try {
-      await updateUser(form);
+      const userData = {
+        ...form,
+        email: user.email // Ensure we always send the email from the user context
+      };
+      await updateUser(userData);
       setMessage("Profile updated");
       toast.success("Profile updated successfully!");
     } catch (err) {
@@ -51,6 +69,22 @@ function ProfilePage() {
       toast.error(err.message || "Failed to change password");
     }
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-xl text-green-600">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-xl text-red-600">Please log in to view your profile.</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

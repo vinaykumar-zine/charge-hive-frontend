@@ -28,7 +28,7 @@ function StationCard({ station }) {
         <p>Total Ports: {station.ports?.length || 0}</p>
       </div>
 
-      <div className="flex gap-2 mt-2">
+      {/* <div className="flex gap-2 mt-2">
         <button
           className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
           onClick={() => navigate(`/book/${station.id}`, { state: { station } })}
@@ -37,6 +37,14 @@ function StationCard({ station }) {
         </button>
         <button
           className="px-4 py-2 rounded-md border text-green-700 border-green-200 hover:bg-green-50"
+          onClick={() => navigate(`/stations/${station.id}`, { state: { station } })}
+        >
+          Details
+        </button>
+      </div> */}
+      <div className="flex gap-2 mt-2">
+        <button
+          className="flex-1 bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition"
           onClick={() => navigate(`/stations/${station.id}`, { state: { station } })}
         >
           Details

@@ -1,13 +1,14 @@
 import React, { useMemo, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { replace, useLocation, useNavigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import apiService from "../services/api";
 
 
 const FALLBACK_STATIONS = [
-  { id: 1, name: "Connaught Place EV Hub", pricePerHour: 120, location: "Connaught Place, New Delhi" },
-  { id: 2, name: "Cyber City ChargePoint", pricePerHour: 180, location: "DLF Cyber City, Gurugram" },
-  { id: 3, name: "Noida Sector 18 Station", pricePerHour: 90, location: "Sector 18, Noida" },
-  { id: 4, name: "Saket Select City EV", pricePerHour: 150, location: "Saket, New Delhi" },
+  // { id: 1, name: "Connaught Place EV Hub", pricePerHour: 120, location: "Connaught Place, New Delhi" },
+  // { id: 2, name: "Cyber City ChargePoint", pricePerHour: 180, location: "DLF Cyber City, Gurugram" },
+  // { id: 3, name: "Noida Sector 18 Station", pricePerHour: 90, location: "Sector 18, Noida" },
+  // { id: 4, name: "Saket Select City EV", pricePerHour: 150, location: "Saket, New Delhi" },
 ];
 
 function BookingPage() {
@@ -38,37 +39,44 @@ function BookingPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
     if (!station) {
       setError("Station not found");
       return;
     }
-    if (!date || !startTime) {
+
+    if (!date || !startTime || date < Date.now()) {
       setError("Please select a date and start time");
       return;
     }
+
     try {
       setSubmitting(true);
-      // Placeholder success flow
-      await new Promise((res) => setTimeout(res, 600));
-      navigate("/bookings", {
-        state: {
-          justBooked: true,
-          booking: {
-            id: Math.floor(Math.random() * 1000000),
-            station: station.name,
-            slotTime: `${date} ${startTime} (${durationMinutes}min)`,
-            price: totalPrice,
-            status: "Upcoming",
-          },
+      const bookingData = {
+        stationId: station.id,
+        date,
+        startTime,
+        durationMinutes,
+        vehicleNumber,
+        price: totalPrice,
+      };
+      console.log("Booking data:", bookingData);
+      const response = await apiService.createBooking(bookingData);
+      navigate(
+        "/bookings",
+        {
+          state: { justBooked: true, booking: response.data },
         },
-        replace: true,
-      });
+        { replace: true }
+      );
     } catch {
       setError("Failed to create booking. Please try again.");
     } finally {
       setSubmitting(false);
     }
   };
+
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -150,7 +158,7 @@ function BookingPage() {
 
             <button
               type="submit"
-              disabled={submitting}
+              // disabled={submitting}
               className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition disabled:opacity-50"
             >
               {submitting ? "Booking..." : "Confirm Booking"}
